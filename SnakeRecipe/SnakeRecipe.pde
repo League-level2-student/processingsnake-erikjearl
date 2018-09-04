@@ -16,14 +16,14 @@ class Segment {
 
   // 4. Add getter and setter methods for both the x and y member variables.
     int getX(){
-      return (x);
+      return x;
     }
     void setX(int z){
       x = z;
     }
     
     int getY(){
-      return (y);
+      return y;
     }
     void setY(int z){
       y = z;
@@ -34,11 +34,12 @@ class Segment {
 
 // 5. Create (but do not initialize) a Segment variable to hold the head of the Snake
   Segment head;
-  int snakeX = head.getX();
-  int snakeY = head.getY();
+
 
 // 6. Create and initialize a String to hold the direction of your snake e.g. "up"
   String direction = "left";
+  
+  String dir="up";
 
 
 // 7. Create and initialize a variable to hold how many pieces of food the snake has eaten.
@@ -77,7 +78,7 @@ void draw() {
 
 
   //12. Call the manageTail, drawFood, drawSnake, move, and collision methods.
-  manageTail();
+  
   drawFood();
   drawSnake();
   move();
@@ -99,8 +100,8 @@ void drawSnake() {
   
   
   fill(0,255,0);
-  rect(snakeX, snakeY, 10,10);
-
+  rect(head.getX(), head.getY(), 10,10);
+  manageTail();
   //test your code
 }
 
@@ -113,18 +114,19 @@ void move() {
   //This is an incomplete switch statement: 
   
   
+  
   switch(dir) {
   case "up":
-    snakeY+=10;
+    head.setY(head.getY() - 10);
     break;
   case "down":
-    snakeY-=10;
+    head.setY(head.getY() + 10);
     break;
   case "left":
-   snakeX-=10;
+   head.setX(head.getX() - 10);
     break;
   case "right":
-    snakeX+=10;
+   head.setX(head.getX() + 10);
     break;
   }
   
@@ -136,8 +138,20 @@ void move() {
 
 
 // 18. Complete the keyPressed method below. Use if statements to set your direction variable depending on what key is pressed.
-
+  
 void keyPressed() {
+  if (keyCode == UP && dir != "down"){
+    dir= "up";
+  }
+  else if (keyCode == DOWN && dir != "up"){
+     dir= "down";
+  }
+  else if (keyCode == LEFT && dir != "right"){
+     dir= "left";
+  }
+  else if (keyCode == RIGHT && dir != "left"){
+     dir= "right";
+  }
 }
 
 
@@ -145,6 +159,18 @@ void keyPressed() {
 // 19. check if your head is out of bounds (teleport your snake head to the other side).
 
 void checkBoundaries() {
+  if(head.getX()< 0){
+   head.setX(500);
+  }
+  else if(head.getX() > 500){
+   head.setX(0);
+  }
+  else if(head.getY() < 0){
+   head.setY(500);
+  }
+  else if(head.getY() > 500){
+   head.setY(0);
+  }
 }
 
 
@@ -156,7 +182,23 @@ void checkBoundaries() {
 // 21. Complete the missing parts of the collision method below.
 
 void collision() {
-
+  
+  
+  
+  
+    if (foodX == head.getX() && foodY == head.getY()){ 
+      System.out.println("Food: " +foodX+ " " +foodY);
+      System.out.println("Snake: " +head.getX()+ " " +head.getY());
+      
+      foodX =((int)random(50)*10);
+      foodY= ((int)random(50)*10);
+      
+      
+      eaten++;
+      
+      
+    }
+  
   // If the segment is colliding with a piece of food...
      // Increase the amount of food eaten and set foodX and foodY to new random locations.
 }
@@ -170,23 +212,32 @@ void collision() {
  **/
 
 //  1. Create and initialize an ArrayList of Segments. (This will be your snake tail!)
-
+      ArrayList<Segment> seg = new ArrayList<Segment>();
+      
 
 // 2. Complete the missing parts of the manageTail method below and call it in the draw method.
 
 void manageTail() {
 
   //Call the drawTail and checkTailCollision methods.
-
-  // Add a new Segment to your ArrayList that has the same X and Y as the head of your snake.
+  drawTail();
+  checkTailCollision();
+  
+  // Add a new Segment to your ArrayList that has the same X and Y as the head of your snake
+  seg.add(new Segment(head.getX(), head.getY()));
 
   // To keep your tail the right length:
   // while the tail size is greater than the number of food pieces eaten, remove the first Segment in your tail.
-
+  while (seg.size() > eaten){
+    seg.remove(0);
+  }
 }
 
 void drawTail() {
     // Draw a 10 by 10 rectangle for each Segment in your snake ArrayList.
+    fill(0,255,0);
+    rect(head.getX(), head.getY(), 10,10);
+    
 }
 
 
@@ -199,4 +250,5 @@ void checkTailCollision() {
   // reset your food variable
 
   //Call this method at the beginning of your manageTail method.
+  
 }
