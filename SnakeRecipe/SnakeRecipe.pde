@@ -228,15 +228,19 @@ void manageTail() {
 
   // To keep your tail the right length:
   // while the tail size is greater than the number of food pieces eaten, remove the first Segment in your tail.
-  while (seg.size() > eaten){
+  while (seg.size() >= eaten){
     seg.remove(0);
   }
 }
 
 void drawTail() {
-    // Draw a 10 by 10 rectangle for each Segment in your snake ArrayList.
-    fill(0,255,0);
-    rect(head.getX(), head.getY(), 10,10);
+  fill(0,255,0);
+  for (Segment s: seg) {
+  rect(s.getX(), s.getY(), 10,10);
+  }
+  
+  // Draw a 10 by 10 rectangle for each Segment in your snake ArrayList.
+    
     
 }
 
