@@ -90,7 +90,7 @@ void draw() {
 
 void drawFood() {
   fill(255,0,0);
-  rect(foodX, foodX, 10,10);
+  rect(foodX, foodY, 10,10);
 }
 
 
@@ -140,16 +140,16 @@ void move() {
 // 18. Complete the keyPressed method below. Use if statements to set your direction variable depending on what key is pressed.
   
 void keyPressed() {
-  if (keyCode == UP && dir != "down"){
+  if (keyCode == UP && !dir.equals("down")){
     dir= "up";
   }
-  else if (keyCode == DOWN && dir != "up"){
+  else if (keyCode == DOWN && !dir.equals("up")){
      dir= "down";
   }
-  else if (keyCode == LEFT && dir != "right"){
+  else if (keyCode == LEFT && !dir.equals("right")){
      dir= "left";
   }
-  else if (keyCode == RIGHT && dir != "left"){
+  else if (keyCode == RIGHT && !dir.equals("left")){
      dir= "right";
   }
 }
@@ -162,13 +162,13 @@ void checkBoundaries() {
   if(head.getX()< 0){
    head.setX(500);
   }
-  else if(head.getX() > 500){
+   if(head.getX() > 500){
    head.setX(0);
   }
-  else if(head.getY() < 0){
+   if(head.getY() < 0){
    head.setY(500);
   }
-  else if(head.getY() > 500){
+   if(head.getY() > 500){
    head.setY(0);
   }
 }
@@ -250,7 +250,11 @@ void drawTail() {
 void checkTailCollision() {
 
   // If your head has the same location as one of your segments...
-
+  for (Segment s: seg){
+  if (s.getX() == head.getX() && s.getY() == head.getY()){
+  eaten =1;
+  }
+  }
   // reset your food variable
 
   //Call this method at the beginning of your manageTail method.
